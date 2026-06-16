@@ -53,31 +53,31 @@ function plot_points(points::Vector{Tuple{Int, Int}}, n::Int, add_points::Bool=t
     return plt, x_coords, y_coords, marker_size
 end
 
-function save_vertices(vertices::Vector{Tuple{Int, Int}}, filename::String)
-    """ Save vertices to a text file. Each line contains: x y """
+function save_points(points::Vector{Tuple{Int, Int}}, filename::String)
+    """ Save points to a text file. Each line contains: x y """
     open(filename, "w") do file
-        for (x, y) in vertices
+        for (x, y) in points
             write(file, "$x $y\n")
         end
     end
-    println("Vertices saved to $filename")
+    println("points saved to $filename")
 end
 
-function load_vertices(filename::String)
-    """ Load vertices from a text file. Each line should contain: x y """
-    vertices = Tuple{Int, Int}[]
+function load_points(filename::String)
+    """ Load points from a text file. Each line should contain: x y """
+    points = Tuple{Int, Int}[]
     open(filename, "r") do file
         for line in eachline(file)
             parts = split(strip(line))
             if length(parts) == 2
                 x = parse(Int, parts[1])
                 y = parse(Int, parts[2])
-                push!(vertices, (x, y))
+                push!(points, (x, y))
             end
         end
     end
-    println("Loaded $(length(vertices)) vertices from $filename")
-    return vertices
+    println("Loaded $(length(points)) points from $filename")
+    return points
 end
 
 function get_next_plot_filename()
@@ -108,9 +108,9 @@ function get_next_plot_filename()
     return next_num, joinpath(folder, "plot_output_$(lpad(next_num, 2, '0')).png")
 end
 
-function get_next_vertices_filename()
-    """ Generate next numbered vertices filename in steiner_vertices folder """
-    folder = "steiner_vertices"
+function get_next_points_filename()
+    """ Generate next numbered points filename in steiner_points folder """
+    folder = "steiner_points"
     
     # Create folder if it doesn't exist
     if !isdir(folder)
@@ -120,9 +120,9 @@ function get_next_vertices_filename()
     # Find the highest existing number
     max_num = 0
     for file in readdir(folder)
-        if startswith(file, "vertices_") && endswith(file, ".txt")
+        if startswith(file, "points_") && endswith(file, ".txt")
             # Extract number from filename
-            num_str = replace(file, "vertices_" => "", ".txt" => "")
+            num_str = replace(file, "points_" => "", ".txt" => "")
             try
                 num = parse(Int, num_str)
                 max_num = max(max_num, num)
@@ -133,5 +133,5 @@ function get_next_vertices_filename()
     end
     
     next_num = max_num + 1
-    return next_num, joinpath(folder, "vertices_$(lpad(next_num, 2, '0')).txt")
+    return next_num, joinpath(folder, "points_$(lpad(next_num, 2, '0')).txt")
 end
