@@ -1,3 +1,50 @@
+#=
+STEINER TREE VISUALIZATION
+==========================
+
+This program visualizes Steiner tree problems on a 2D grid.
+
+USAGE
+-----
+
+There are two main modes of operation:
+
+1. SAVE MODE - Generate new random points and save them:
+   julia steiner.jl <board_dimension> <num_points> save
+   
+   Example:
+   julia steiner.jl 10 30 save
+   
+   This will:
+   - Create a 10x10 grid with 30 random points
+   - Calculate the Steiner tree solution
+   - Save the plot to steiner_plots/plot_output_XX.png
+   - Save the points to steiner_points/points_XX.txt
+   - Display the plot
+
+2. READ MODE - Load previously saved points and visualize:
+   julia steiner.jl <board_dimension> <num_points> read <filename>
+   
+   Example:
+   julia steiner.jl 0 0 read steiner_points/points_01.txt
+   
+   Note: board_dimension and num_points are ignored in read mode
+   
+   This will:
+   - Load points from the specified file
+   - Auto-detect the board dimension from the points
+   - Calculate the Steiner tree solution
+   - Save the plot to steiner_plots/read_mode_plot.png
+   - Display the plot
+
+FILES
+-----
+- steiner.jl: Main program
+- utils.jl: Utility functions for file I/O, plotting, etc.
+- steiner_plots/: Generated plot images
+- steiner_points/: Saved point coordinates (text files)
+=#
+
 using Plots
 using Statistics
 
@@ -87,7 +134,7 @@ else
     read_mode = true
 end
 plt, x_coords, y_coords, marker_size = plot_points(points, board_dimension, true)
-# run_MSTST(plt, x_coords, y_coords, marker_size, points, board_dimension)
+run_MSTST(plt, x_coords, y_coords, marker_size, points, board_dimension)
 
 # Display if running interactively, or if in read mode
 if isinteractive() || read_mode
