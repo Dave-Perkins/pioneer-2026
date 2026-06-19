@@ -87,7 +87,7 @@ else
     read_mode = true
 end
 plt, x_coords, y_coords, marker_size = plot_points(points, board_dimension, true)
-run_MSTST(plt, x_coords, y_coords, marker_size, points, board_dimension)
+# run_MSTST(plt, x_coords, y_coords, marker_size, points, board_dimension)
 
 # Display if running interactively, or if in read mode
 if isinteractive() || read_mode
