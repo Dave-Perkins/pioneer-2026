@@ -10,12 +10,16 @@ function load_graph(path::String)
     colors    = Int[]
     edges     = Tuple{Int,Int}[]
     is_gb     = false
+    n_colors  = 8
 
     for raw in eachline(path)
         line = strip(raw)
         isempty(line) && continue
         if startswith(line, "# graph_builder")
             is_gb = true; continue
+        end
+        if startswith(line, "# colors ")
+            n_colors = parse(Int, split(line)[3]); continue
         end
         startswith(line, "#") && continue
 
@@ -51,7 +55,7 @@ function load_graph(path::String)
         end
     end
 
-    return positions, colors, edges
+    return positions, colors, edges, n_colors
 end
 
 const PALETTE = [

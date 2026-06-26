@@ -1,4 +1,4 @@
-# Usage: julia --project=. graph_color.jl graphs/graph03.txt
+# Usage: julia --project=. graph_color.jl graphs/graph01.txt
 
 using GLMakie
 using Random 
@@ -15,11 +15,11 @@ function check_proper_coloring(edges, colors)
     return true
 end
 
-function greedy_coloring(edges, colors)
+function greedy_coloring(edges, colors, n_colors)
     """ A greedy heuristic that assigns an available color that has been used the most so far. """
-    all_colors = [n for n in 1:length(colors)]
+    all_colors = [n for n in 1:n_colors]
     # Store the frequency of the various colors in a dictionary
-    color_frequencies = Dict{Int, Int}(x => 0 for x in 1:length(colors))
+    color_frequencies = Dict{Int, Int}(x => 0 for x in 1:n_colors)
     color_frequencies[1] = length(colors) # all nodes have color 1 when we start
     # Put the nodes in a random order
     node_order = shuffle!([n for n in 1:length(colors)])
@@ -61,11 +61,11 @@ end
 path = ARGS[1]
 isfile(path) || error("File not found: $path")
 
-positions, colors, edges = load_graph(path)
+positions, colors, edges, n_colors = load_graph(path)
 isempty(positions) && error("No vertices found in $path")
 
 screen, o_colors, o_labels = display_graph(positions, edges, basename(path))
-greedy_coloring(edges, colors)
+greedy_coloring(edges, colors, n_colors)
 println("Properly colored: ", check_proper_coloring(edges, colors))
 set_colors!(o_colors, o_labels, colors)
 wait(screen)
