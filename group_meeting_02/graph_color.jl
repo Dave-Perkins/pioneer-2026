@@ -31,11 +31,8 @@ function greedy_coloring(edges, colors, n_colors)
         append!(neighbors, [u for (u, v) ∈ edges if v == n && u ∉ neighbors])
         # Collect the colors used by those neighbors 
         neighbors_colors = unique([colors[n] for n in neighbors])
-        @show neighbors_colors
-        # Collect the colors that are NOT used by those neighbors 
-        @show all_colors 
+        # Collect the colors that are NOT used by those neighbors  
         available_colors = setdiff(all_colors, neighbors_colors)
-        @show available_colors
         # If no colors are available, then give up 
         if isempty(available_colors)
             println("I have failed to color this graph properly.")
@@ -43,12 +40,10 @@ function greedy_coloring(edges, colors, n_colors)
         end
         # Choose the available color that has thus far been used the least 
         most_used_available_color = argmax(key -> color_frequencies[key], available_colors)
-        @show most_used_available_color
         # Assign that color to the current node
         color_frequencies[colors[n]] -= 1
         colors[n] = most_used_available_color
         color_frequencies[colors[n]] += 1
-        @show color_frequencies
     end
 
 end
